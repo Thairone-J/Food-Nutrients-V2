@@ -1,4 +1,5 @@
-import notifications from '../utils/notifications.js';
+import notifications from './notifications.js';
+import apiServices from '../services/apiServices.js';
 
 export const validateForm = (username, password, submitType) => {
   if (!username || !password) {
@@ -21,6 +22,10 @@ export const validateForm = (username, password, submitType) => {
 };
 
 const auth = {
-  login: (username, password, token) => {},
-  register: (username, password) => {},
+  login: (username, password) => {
+    apiServices.loginUser(username, password);
+  },
+  register: (username, password) => {
+    apiServices.registerUser(username, password);
+  },
 };
