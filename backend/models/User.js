@@ -1,32 +1,36 @@
 import { DataTypes } from 'sequelize';
-import  sequelize  from '../config/db.js';
+import sequelize from '../config/db.js';
 
 const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+  },
+  profilePicture: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   caloriesGoal: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true,
   },
   proteinGoal: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true,
   },
   carbsGoal: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true,
   },
   fatsGoal: {
     type: DataTypes.INTEGER,
-    allowNull: true
-  }
+    allowNull: true,
+  },
 });
 
 export default User;

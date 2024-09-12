@@ -10,10 +10,8 @@ const authStateRedirect = async () => {
 
   if (tokenIsValid) {
     layout.renderMainContainer(app);
-    state.user.isLogged = true;
   } else {
     layout.renderLoginContainer(app);
-    state.user.isLogged = false;
   }
 };
 

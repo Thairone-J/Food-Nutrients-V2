@@ -22,7 +22,17 @@ export const registerUser = async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.status(201).json({ token });
+    const userInfo = {
+      id: newUser.id,
+      username: newUser.username,
+      profilePicture: null,
+      caloriesGoal: null,
+      proteinGoal: null,
+      carbsGoal: null,
+      fatsGoal: null,
+    };
+
+    res.status(201).json({ token, userInfo });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -43,10 +53,25 @@ export const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: '5s',
+      expiresIn: '1h',
     });
 
-    res.status(200).json({ token });
+    const userInfo = {
+      id: user.id,
+      username: user.username,
+      profilePicture: user.profilePicture,
+      caloriesGoal: user.caloriesGoal,
+      proteinGoal: user.proteinGoal,
+      carbsGoal: user.carbsGoal,
+      fatsGoal: user.fatsGoal,
+    };
+
+    const response = {
+      token,
+      userInfo,
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

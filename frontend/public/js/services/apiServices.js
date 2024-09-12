@@ -20,9 +20,8 @@ const apiServices = {
       const data = await response.json();
 
       localStorage.setItem('token', data.token);
-      console.log('Login successful:', data);
+      sessionStorage.setItem('userInfo', JSON.stringify(data.userInfo));
 
-      // Redirect to homepage but now logged :)
       authStateRedirect();
     } catch (error) {
       console.error('Error during login:', error);
@@ -49,8 +48,9 @@ const apiServices = {
       const data = await response.json();
 
       localStorage.setItem('token', data.token);
+      sessionStorage.setItem('userInfo', JSON.stringify(data.userInfo));
 
-      console.log('Registration successful:', data);
+      authStateRedirect();
     } catch (error) {
       console.error('Error during registration:', error);
     }
@@ -70,6 +70,9 @@ const apiServices = {
         return data.tokenIsValid;
       } else {
         localStorage.removeItem('token');
+        if (sessionStorage.getItem('userInfo')) {
+          sessionStorage.removeItem('userInfo');
+        }
         return false;
       }
     } catch (error) {
