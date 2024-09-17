@@ -1,6 +1,5 @@
-import layout from '../pages/main_layout.js';
+import layout from '../components/main_layout.js';
 import apiServices from '../services/apiServices.js';
-import state from './state.js';
 
 const authStateRedirect = async () => {
   const token = localStorage.getItem('token');
@@ -16,3 +15,6 @@ const authStateRedirect = async () => {
 };
 
 export default authStateRedirect;
+
+
+
