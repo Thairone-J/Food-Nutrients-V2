@@ -1,3 +1,3 @@
-import authStateRedirect from './js/utils/auth.js';
+import application from './js/components/app.js';
 
-authStateRedirect();
+application.init();
