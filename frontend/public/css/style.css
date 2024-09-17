@@ -85,13 +85,13 @@ html {
 .layout-side-container {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
-  background-color: rgba(9, 123, 223, 0.284);
+  background-color: rgb(39, 56, 78);
 }
 
 .layout-content-container {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
-  background-color: rgba(43, 171, 226, 0.3);
+  background-color: rgb(12, 19, 39);
 }
 
 .auth-container .form-container {
@@ -146,4 +146,56 @@ html {
   font-size: 0.85rem;
   align-items: center;
   justify-content: center;
+}
+
+.sidebar-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar-container .nav-buttons {
+  padding: 5px;
+  gap: 5px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/*  */
+/* Para telas muito grandes (acima de 1900px) */
+@media (min-width: 1900px) {
+  .layout-main-container {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+/* Para telas grandes (entre 1200px e 1900px - Full HD incluído) */
+@media (min-width: 1200px) and (max-width: 1899px) {
+  .layout-main-container {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+/* Para telas menores que 1200px */
+@media (max-width: 1199px) {
+  .layout-main-container {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+/* Para telas menores que 800px */
+@media (max-width: 799px) {
+  .layout-main-container {
+    grid-template-columns: 150px 1fr;
+  }
+}
+
+/* Para telas muito pequenas (menores que 500px) */
+@media (max-width: 499px) {
+  .layout-main-container {
+    grid-template-columns: 100px 1fr;
+  }
 }
