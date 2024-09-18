@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcryptjs'; 
 import sequelize from '../config/db.js';
 
 const User = sequelize.define('User', {
@@ -30,6 +31,12 @@ const User = sequelize.define('User', {
   fatsGoal: {
     type: DataTypes.INTEGER,
     allowNull: true,
+  },
+}, {
+  hooks: {
+    beforeCreate: async (user, options) => {
+      user.password = await bcrypt.hash(user.password, 10);
+    },
   },
 });
 
