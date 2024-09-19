@@ -2,22 +2,33 @@ import authStateRedirect from '../utils/auth.js';
 
 export const BASE_URL = 'http://localhost:3000';
 
+const apiRequest = async (endpoint, method, body = null, headers = {}) => {
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : null,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Request failed');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('API request error:', error);
+    throw error;
+  }
+};
+
 const apiServices = {
   loginUser: async (username, password) => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
+      const data = await apiRequest('/auth/login', 'POST', { username, password });
 
       localStorage.setItem('token', data.token);
       sessionStorage.setItem('userInfo', JSON.stringify(data.userInfo));
@@ -30,22 +41,7 @@ const apiServices = {
 
   registerUser: async (username, password) => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-
-      const data = await response.json();
+      const data = await apiRequest('/auth/register', 'POST', { username, password });
 
       localStorage.setItem('token', data.token);
       sessionStorage.setItem('userInfo', JSON.stringify(data.userInfo));
@@ -58,50 +54,29 @@ const apiServices = {
 
   authUser: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/validate-token`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const data = await apiRequest('/auth/validate-token', 'POST', null, {
+        Authorization: `Bearer ${token}`,
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        return data.tokenIsValid;
-      } else {
-        localStorage.removeItem('token');
-        if (sessionStorage.getItem('userInfo')) {
-          sessionStorage.removeItem('userInfo');
-        }
-        return false;
-      }
+      return data.tokenIsValid;
     } catch (error) {
-      console.error('Error validating token:', error);
+      console.error('Erro ao validar o token:', error);
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('userInfo');
+      return false;
     }
   },
-};
 
-const updateGoals = async (token, updatedGoals) => {
-  try {
-    const response = await fetch('/api/users/goals', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+  updateGoals: async (token, goals) => {
+    try {
+      const data = await apiRequest('/users/goals', 'POST', goals, {
         Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updatedGoals),
-    });
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to update goals');
+      return data;
+    } catch (error) {
+      console.error('Error updating goals:', error);
     }
-
-    const data = await response.json();
-    console.log('Goals updated successfully:', data);
-    return data;
-  } catch (error) {
-    console.error('Error updating goals:', error);
-  }
+  },
 };
 
 export default apiServices;
